@@ -31,10 +31,6 @@ public class DialogManager : SingletonMonoBehaviour<DialogManager> {
     {
         InstantiateDialog();
         _statemachine.Next(State.Wait);
-        Open(new DialogSettings()
-        {
-            Message = "meg"
-        });
         yield return null;
     }
 
