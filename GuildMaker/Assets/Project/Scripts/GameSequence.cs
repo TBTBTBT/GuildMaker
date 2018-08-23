@@ -20,7 +20,7 @@ public class GameSequence : MonoBehaviour {
     private int _time = 0;
     public GameDate Date { get; set; }
     //リソース
-    private int _monay = 0;
+    private PlayerData _player = new PlayerData();
     //雇用した人
     //_employee
 
@@ -66,50 +66,51 @@ public class GameSequence : MonoBehaviour {
 	    _statemachine.Update();
 	}
     public void OnTapJob(){
-        _monay += 1;
+        _player.Monay += 1;
     }
 
     public void OnTapQuest()
     {
 
     }
+
     /// <summary>
     /// debug
     /// </summary>
+    private Rect rect = new Rect(0, 0, Screen.width, Screen.height);
 
     void OnGUI()
     {
 
-        Debug(new Rect(0,300,Screen.width,200));
+        rect = GUILayout.Window(0, rect, Debug, "Game Debug");
     }
 
-    private Vector2 scr;
-    void Debug(Rect area)
+    private Vector2 btnscr;
+    private Vector2 lblscr;
+    void Debug(int id)
     {
-        GUILayout.BeginArea(area);
-
-        scr = GUILayout.BeginScrollView(scr);
+        
+        lblscr = GUILayout.BeginScrollView(lblscr, GUILayout.Height(100));
         GUILayout.BeginHorizontal(GUILayout.Height(50));
+
         DebugLabel(Date._year.ToString(), "年");
         DebugLabel(Date._month.Value.ToString(), "月");
         DebugLabel(Date._week.Value.ToString(),"週");
         DebugLabel(Date._hour.Value.ToString(),"時");
-        DebugLabel("所持金", _monay.ToString());
+        DebugLabel("所持金", _player.Monay.ToString());
+        DebugLabel("ポイント", _player.Point.ToString());
+        DebugLabel("ランク", _player.Rank.ToString());
         GUILayout.EndHorizontal();
+        GUILayout.EndScrollView();
+        btnscr = GUILayout.BeginScrollView(btnscr, GUILayout.Height(80));
         GUILayout.BeginHorizontal();
         DebugButton("内職", OnTapJob);
         DebugButton("採用", OnTapQuest);
         DebugButton("クエスト", OnTapQuest);
-        DebugButton("クエスト", OnTapQuest);
-        DebugButton("クエスト", OnTapQuest);
-        DebugButton("クエスト", OnTapQuest);
-        DebugButton("クエスト", OnTapQuest);
-        DebugButton("クエスト", OnTapQuest);
-        DebugButton("クエスト", OnTapQuest);
+
 
         GUILayout.EndHorizontal();
         GUILayout.EndScrollView();
-        GUILayout.EndArea();
     }
 
     void DebugLabel(params string[] str)
@@ -123,7 +124,7 @@ public class GameSequence : MonoBehaviour {
     }
     void DebugButton(string label,UnityAction action)
     {
-        if (GUILayout.Button(label))
+        if (GUILayout.Button(label, GUILayout.Width(80), GUILayout.Height(40)))
         {
             action();
         }
