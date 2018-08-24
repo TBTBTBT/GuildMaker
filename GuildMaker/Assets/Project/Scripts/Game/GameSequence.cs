@@ -4,27 +4,36 @@ using UnityEngine;
 using UnityEngine.Events;
 
 public class GameSequence : MonoBehaviour {
+
+    //-------------------------------------
+    //statemachine
+    //-------------------------------------
+
     public enum State
     {
         Init,
         Routine,
         Pause,
 
-
     }
     Statemachine<State> _statemachine = new Statemachine<State>();
+
+    //-------------------------------------
     // property
+    //-------------------------------------
 
-    //時間(年 月(12) 週(4) 時間(24))
+    private int        _time = 0;//時間（ステップ数）
+    private PlayerData _player = new PlayerData(); //リソース
+    public GameDate     Date { get; set; }    //時間(年 月(12) 週(4) 時間(24))
+    //-------------------------------------
+    //states
+    //-------------------------------------
 
-    private int _time = 0;
-    public GameDate Date { get; set; }
-    //リソース
-    private PlayerData _player = new PlayerData();
-    //雇用した人
-    //_employee
+    void Awake()
+    {
+        _statemachine.Init(this);
+    }
 
-    //
     IEnumerator Init()
     {
         Date = new GameDate(1,1,1,0);
@@ -36,29 +45,27 @@ public class GameSequence : MonoBehaviour {
     {
         while (true)
         {
-            //時間を進める
-            AdvanceTime();
 
-            //
+            AdvanceTime(); //時間を進める
             yield return null;
         }
-    }
-
-    void AdvanceTime()
-    {
-        _time++;
-        Date.Advance(1);
-
-
-        //LogViewer.Instance.Add(_time.ToString());
     }
     IEnumerator Pause()
     {
         yield return null;
     }
-	void Awake () {
-		_statemachine.Init(this);
-	}
+
+    //-------------------------------------
+    //function
+    //-------------------------------------
+
+
+    void AdvanceTime()
+    {
+        _time++;
+        Date.Advance(1);
+    }
+
 	
 	// Update is called once per frame
 	void Update ()
@@ -132,59 +139,3 @@ public class GameSequence : MonoBehaviour {
 }
 
 
-
-//ゲーム内時間
-
-
-
-public class GameDate{
-    public class LoopRange{
-        //min以上 max未満
-        int _min;
-        int _max;
-       
-        public int Value { get; set; }
-
-        public LoopRange(int min,int max){
-            _min = min;
-            _max = max;
-            Value = _min;
-
-        }
-        public int Advance(int next){
-            int _isLoop = 0;
-            Value += next;
-            if ( Value >= _max)
-            {
-                Value = _min + (Value - _max);
-                _isLoop = 1;
-            }
-            if (Value< _min)
-            {
-                Value= _max + (Value - _min);
-                _isLoop = -1;
-            }
-            return _isLoop;
-        }
-    }
-    public int _year { get; set; }
-    public LoopRange _month { get; set; }
-    public LoopRange _week { get; set; }
-    public LoopRange _hour { get; set; }
-    public GameDate(int y = 1, int m = 1, int w = 1,int h = 0){
-        InitDate(y, m, w, h);
-    }
-    void InitDate(int y , int m , int w , int h ){
-        _year = y;
-        _month = new LoopRange(1, 13);
-        _month.Value = m;
-        _week = new LoopRange(1, 5);
-        _week.Value = w;
-        _hour = new LoopRange(0, 24);
-        _hour.Value = h;
-    }
-    //時間を進める next時間
-    public void Advance(int next = 1){
-        _year += _month.Advance(_week.Advance(_hour.Advance(next)));
-    }
-}
