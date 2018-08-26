@@ -25,30 +25,22 @@ public class MasterDataManager : SingletonMonoBehaviour<MasterDataManager>
 
 public class JsonDatabase
 {
-    public QuestData Quest { get; set; }
+    public MstQuestData Quest { get; set; }
 
     public void Init()
     {
-        Quest = JsonAccessor.ReadFile<QuestData>("Master/mst_quest.json");
+        Quest = JsonAccessor.ReadFile<MstQuestData>("Master/mst_quest.json");
+
+
     }
+
+    //HTMLでいじれるようにする
+
 #if UNITY_EDITOR
     public void Save()
     {
         JsonAccessor.SaveFile("Master/mst_quest.json",Quest);
     }
 #endif
-
-}
-[Serializable]
-public class QuestData
-{
-    [Serializable]
-    public class DataFormat
-    {
-        public int id;
-    }
-
-    public List<DataFormat> Data = new List<DataFormat>();
-
 
 }

@@ -2,15 +2,16 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GUIDebug : MonoBehaviour {
-
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+public class GUIDebug
+{
+    class ButtonListVertical{
+        Vector2 _scr;
+        void Draw(string label,GUIStyle style){
+            GUILayout.Label(label);
+            _scr = GUILayout.BeginScrollView(_scr, style);
+            GUILayout.BeginVertical();
+            GUILayout.EndVertical();
+            GUILayout.EndScrollView();
+        }
+    }
 }

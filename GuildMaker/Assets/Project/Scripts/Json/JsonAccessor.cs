@@ -30,6 +30,7 @@ public class JsonAccessor {
         {
             return new T();
         }
+        Debug.Log("read at " + fullPath);
         return JsonUtility.FromJson<T>(json);
     }
     /// <summary>

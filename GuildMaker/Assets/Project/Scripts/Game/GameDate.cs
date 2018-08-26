@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.Events;
 //ゲーム内時間
 
 
@@ -15,7 +15,7 @@ public class GameDate
         int _max;
 
         public int Value { get; set; }
-
+        public UnityEvent OnLoop = new UnityEvent();
         public LoopRange(int min, int max)
         {
             _min = min;
@@ -36,6 +36,9 @@ public class GameDate
             {
                 Value = _max + (Value - _min);
                 _isLoop = -1;
+            }
+            if(_isLoop != 0){
+                OnLoop.Invoke();
             }
             return _isLoop;
         }
