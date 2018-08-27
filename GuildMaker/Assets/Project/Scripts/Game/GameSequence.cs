@@ -162,8 +162,15 @@ public class GameSequence : MonoBehaviour
     /// </summary>
     public void OntapEmployee()
     {
+        //情報ダイアログと行動ボタン
         // _player.Employees.Add(new Employee);
     }
+
+
+
+
+    //-------------------------------------------------------------------------------
+
     /// <summary>
     /// debug
     /// </summary>
@@ -183,8 +190,9 @@ public class GameSequence : MonoBehaviour
     void DebugView(int id)
     {
         PropertyView();
-        QuestView();
+        EmployeeView();
         RecruitView();
+        QuestView();
         ButtonView();
 
     }
@@ -202,6 +210,19 @@ public class GameSequence : MonoBehaviour
         DebugLabel("ポイント", _player.Point.ToString());
         DebugLabel("ランク", _player.Rank.ToString());
         GUILayout.EndHorizontal();
+        GUILayout.EndScrollView();
+    }
+
+    void EmployeeView()
+    {
+        GUILayout.Label("Employee");
+        qstscr = GUILayout.BeginScrollView(qstscr, GUILayout.Height(150));
+        GUILayout.BeginVertical();
+        foreach (var e in _player.Employees)
+        {
+            DebugButton(e.Name + " , ", OntapEmployee);
+        }
+        GUILayout.EndVertical();
         GUILayout.EndScrollView();
     }
     void QuestView()
