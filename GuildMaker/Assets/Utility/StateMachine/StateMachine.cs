@@ -130,6 +130,7 @@ public class Statemachine<T> : IStatemachine where T : struct
     {
         while (instruction.keepWaiting)
         {
+            
             yield return null;
         }
     }

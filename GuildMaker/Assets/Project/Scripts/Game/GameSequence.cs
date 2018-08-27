@@ -58,7 +58,7 @@ public class GameSequence : MonoBehaviour
 
             AdvanceTime(); //時間を進める
             HourlyEvent();
-            yield return null;
+            yield return new WaitForFrameCount(10);
         }
     }
     IEnumerator Pause()
@@ -163,6 +163,7 @@ public class GameSequence : MonoBehaviour
     public void OntapEmployee()
     {
         //情報ダイアログと行動ボタン
+        //訓練、探索
         // _player.Employees.Add(new Employee);
     }
 
@@ -216,11 +217,17 @@ public class GameSequence : MonoBehaviour
     void EmployeeView()
     {
         GUILayout.Label("Employee");
-        qstscr = GUILayout.BeginScrollView(qstscr, GUILayout.Height(150));
+        qstscr = GUILayout.BeginScrollView(qstscr, GUILayout.Height(150),GUILayout.Width(300));
         GUILayout.BeginVertical();
         foreach (var e in _player.Employees)
         {
-            DebugButton(e.Name + " , ", OntapEmployee);
+            string info = e.Name + "/n"
+                           + e.Param.Hp  + ","
+                           + e.Param.Atk + ","
+                           + e.Param.Def + ","
+                           + e.Param.Mag + ","
+                           + e.Param.Salary;
+            DebugButton(info, OntapEmployee);
         }
         GUILayout.EndVertical();
         GUILayout.EndScrollView();
